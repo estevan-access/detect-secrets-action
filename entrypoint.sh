@@ -2,6 +2,7 @@
 
 set -o pipefail
 set -exu
+git config --global --add safe.directory /github/workspace
 
 if [ ! -r "$DS_BASELINE_FILE" ]
 then
