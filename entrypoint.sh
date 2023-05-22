@@ -5,8 +5,7 @@ set -exu
 
 if [ $GITHUB_ACTIONS ]
 then
-	echo $GITHUB_WORKSPACE
-	git config --global --add safe.directory /github/workspace
+	git config --global --add safe.directory $GITHUB_WORKSPACE
 fi
 
 if [ ! -r "$DS_BASELINE_FILE" ]
