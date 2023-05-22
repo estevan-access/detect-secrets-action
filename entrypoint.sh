@@ -14,6 +14,7 @@ then
 	if [ $DS_REQUIRE_BASELINE -eq 0 ]
 	then
 		detect-secrets scan --all-files > "$DS_BASELINE_FILE"
+		exit 0
 	else
 		echo "No readable detect-secrets baseline file found at '$DS_BASELINE_FILE', and it was set to required by \$DS_REQUIRE_BASELINE ($DS_REQUIRE_BASELINE)"
 		exit -1
