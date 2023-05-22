@@ -15,28 +15,30 @@ name: Scan Code for Secrets
 
 on:
   pull_request:
-    - opened
-    - reopened
-    - ready_for_review
-    - synchronize
+    types: [opened, reopened, ready_for_review, synchronize]
   push:
     branches:
       - '**'
     tags:
       - '!**'
-
 jobs:
   check-for-secrets:
     runs-on: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Yelp's detect-secrets
-        uses: RobertFischer/detect-secrets-action@v2.0.0
-      - name: Commit back .secrets.baseline (if it was missing)
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: estevan-access/detect-secrets-action@v0.2
+        env:
+          # DS_REQUIRE_BASELINE: 0
+          # DS_ADDL_ARGS:
+          DS_BASELINE_FILE: .secrets.baseline
+          DS_AUDIT_BASELINE: 0
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
         with:
-          commit_message: "build(detect-secrets): Commit the newly-generated .secrets.baseline file"
+          name: .secrets.baseline
+          path: .secrets.baseline
 ```
 
 ## Environment Variables
@@ -44,10 +46,11 @@ jobs:
 | Key  | Value Description | Default Value |
 | ---- | ----------------- | ------------- |
 | `DS_ADDL_ARGS` | Additional arguments to pass to the `detect-secrets` binary | No additional arguments (ie: the empty string) |
-| `DS_REQUIRE_BASELINE` | If set to anything other than `0`, we will fail the test if there is no baseline file | `0` (ie: don't require baseline) ]
+| `DS_REQUIRE_BASELINE` | If set to anything other than `0`, we will fail the test if there is no baseline file | `0` creates the baseline as action artifact |
+| `DS_AUDIT_BASELINE` | If set to anything other than `0`, we will run the baseline audit (interactive) | `0` no baseline audit 
+
 
 ## Usage Notes
 
-If this action runs and does not see a `detect-secrets` baseline file at `.secrets.baseline` in the root of the repo, then the action will generate that baseline file for you.
-If you don't commit that file back, then this action is effectively an expensive no-op. The sample configuration above demonstrates how to commit back using the
-(`git-auto-commit`)[https://github.com/marketplace/actions/git-auto-commit] action.
+If this action runs and does not see a `detect-secrets` baseline file at `.secrets.baseline` in the root of the repo, then the action will generate that baseline file for you as action artifact.
+If you don't commit that file back, then this action is effectively an expensive no-op. 
