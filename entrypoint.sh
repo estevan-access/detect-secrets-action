@@ -5,7 +5,7 @@ set -exu
 
 if [ $GITHUB_ACTIONS ]
 then
-	$echo $GITHUB_WORKSPACE
+	echo $GITHUB_WORKSPACE
 	git config --global --add safe.directory /github/workspace
 fi
 
