@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run Yelp's detect-secrets
-        uses: estevan-access/detect-secrets-action@v1
+        uses: estevan-access/detect-secrets-action@v1.1
 #      - name: Commit back .secrets.baseline (if it was missing)
 #        uses: stefanzweifel/git-auto-commit-action@v4
 #        with:
