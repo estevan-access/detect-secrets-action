@@ -3,6 +3,12 @@
 set -o pipefail
 set -exu
 
+if [ $GITHUB_ACTIONS ]
+then
+	$echo $GITHUB_WORKSPACE
+	git config --global --add safe.directory /github/workspace
+fi
+
 if [ ! -r "$DS_BASELINE_FILE" ]
 then
 	if [ $DS_REQUIRE_BASELINE -eq 0 ]
