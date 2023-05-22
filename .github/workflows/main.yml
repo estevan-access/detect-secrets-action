@@ -24,4 +24,9 @@ jobs:
           # DS_REQUIRE_BASELINE: 0
           # DS_ADDL_ARGS:
           DS_BASELINE_FILE: .secrets.baseline
-          DS_AUDIT_BASELINE: 0    
+          DS_AUDIT_BASELINE: 0
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: .secrets.baseline
+          path: .secrets.baseline
